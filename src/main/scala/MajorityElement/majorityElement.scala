@@ -5,43 +5,42 @@ object majorityElement {
 
   val logger: Logger = Logger("MajorityElementLogger")
 
-  def hasMajorityElement(input: Array[Int]): Int = {
-    val majorityElement = _hasMajorityElement(input)
-    if(majorityElement._1 && checkMajority(input, majorityElement._2)) {
-      logger.info(s"Found majority element ${majorityElement._2}"); 1
-    } else 0
+  def getMajority(input: Array[Int]): Int = {
+    val majority = _getMajority(input, 0, input.length -1)
+    val majorityCount = countFrequency(input, 0, input.length -1, majority)
+    if(majorityCount > input.length/2){
+    majority} else {
+      0
+    }
   }
 
-  def checkMajority(input: Array[Int], checkVal: Int): Boolean = {
-    logger.info(s"Checking whether value ${checkVal} is a majority for array ${input}")
+  def _getMajority(input: Array[Int], leftIndex: Int, rightIndex: Int): Int = {
 
-    val checkCount = input.count( x => x == checkVal)
-    checkCount > input.length/2
-  }
-
-  def _hasMajorityElement(input: Array[Int]): (Boolean, Int) = {
-    logger.info(s"Finding majority element for array ${input}")
-    if(input.length <= 3) {
-      directMajority(input)
+    if( leftIndex == rightIndex) {
+      input(leftIndex)
     } else {
-      val midPoint = math.floor(input.length/2).toInt
-      logger.info(s"Midpoint index is ${midPoint}")
-      val lowerMajority = _hasMajorityElement(input.slice(0, midPoint))
-      if(lowerMajority._1){ lowerMajority } else {
-        val upperMajority = _hasMajorityElement(input.slice(midPoint, input.length))
-        if(upperMajority._1){
-          upperMajority } else {
-          (false, -1)
+
+      val midPoint = (leftIndex + rightIndex)/2
+
+      val leftMajority = _getMajority(input, 0, midPoint)
+      val rightMajority = _getMajority(input, midPoint + 1, rightIndex)
+
+      val leftFreq = countFrequency(input, leftIndex, rightIndex, leftMajority)
+      val rightFreq = countFrequency(input, leftIndex, rightIndex, rightMajority)
+
+      if(leftFreq > rightFreq){
+        leftMajority
+      } else {
+        rightMajority
       }
-      }
+
     }
+
   }
 
-  def directMajority(input: Array[Int]): (Boolean, Int) = {
-    val counts = input.groupBy(identity).map(x => (x._1, x._2.length))
-    val maxCount = counts.values.max
-    (maxCount > input.length/2, maxCount)
-    }
+  def countFrequency(input: Array[Int], leftIndex: Int, rightIndex: Int, target: Int): Int = {
+    input.slice(leftIndex, rightIndex +1).count( x => x == target)
+  }
 
 }
 
