@@ -18,8 +18,8 @@ object quickSort {
       Array(input(leftIndex))
     } else {
       val randIndex = randomGen.nextInt(rightIndex - leftIndex) + leftIndex
-      val firstElement = input(0)
-      val randPivotInput = input.updated(0, input(randIndex)).updated(randIndex, firstElement)
+      val firstElement = input(leftIndex)
+      val randPivotInput = input.updated(leftIndex, input(randIndex)).updated(randIndex, firstElement)
       val partitionArrayIndex = partition(randPivotInput, leftIndex, rightIndex)
       val lowerSorted = _sort(partitionArrayIndex._1, leftIndex, partitionArrayIndex._2 - 1, randomGen)
       val upperSorted =_sort(partitionArrayIndex._1, partitionArrayIndex._2 + 1, rightIndex, randomGen)
@@ -35,7 +35,7 @@ object quickSort {
   def _partition(input: Array[Int], leftIdx: Int, rightIdx: Int, pivotVal:Int, scanIdx: Int, lowerIdx: Int): (Array[Int], Int) = {
     val newInputLowerIndex = partitionUpdate(input, pivotVal, scanIdx, lowerIdx)
     if(scanIdx >= rightIdx) {
-      val finalInput = newInputLowerIndex._1.updated(leftIdx, newInputLowerIndex._1(lowerIdx)).updated(lowerIdx, pivotVal)
+      val finalInput = newInputLowerIndex._1.updated(leftIdx, newInputLowerIndex._1(newInputLowerIndex._2)).updated(newInputLowerIndex._2, pivotVal)
       return (finalInput, newInputLowerIndex._2)
     } else {
     }
