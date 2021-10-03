@@ -1,9 +1,6 @@
 package MajorityElement
-import com.typesafe.scalalogging.Logger
 
 object majorityElement {
-
-  val logger: Logger = Logger("MajorityElementLogger")
 
   def getMajority(input: Array[Int]): Int = {
     val majority = _getMajority(input, 0, input.length -1)
