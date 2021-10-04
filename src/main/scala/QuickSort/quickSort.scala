@@ -1,5 +1,7 @@
 package QuickSort
 
+import java.util.NoSuchElementException
+
 import scala.annotation.tailrec
 import scala.util.Random
 
@@ -15,7 +17,9 @@ object quickSort {
 
   def _sort(input: Array[Int], leftIndex: Int, rightIndex: Int, randomGen: Random): Array[Int] = {
     if(leftIndex >= rightIndex){
-      Array(input(leftIndex))
+      try{Array(input(leftIndex))} catch {
+        case e: ArrayIndexOutOfBoundsException => Array()
+      }
     } else {
       val randIndex = randomGen.nextInt(rightIndex - leftIndex) + leftIndex
       val firstElement = input(leftIndex)
