@@ -1,6 +1,8 @@
+import scala.io.StdIn.{readInt, readLine}
+
 object majorityElement {
 
-  def getMajority(input: Array[Int]): Int = {
+  def getMajority(input: Array[Long]): Long = {
     val majority = _getMajority(input, 0, input.length -1)
     val majorityCount = countFrequency(input, 0, input.length -1, majority)
     if(majorityCount > input.length/2){
@@ -9,7 +11,7 @@ object majorityElement {
     }
   }
 
-  def _getMajority(input: Array[Int], leftIndex: Int, rightIndex: Int): Int = {
+  def _getMajority(input: Array[Long], leftIndex: Int, rightIndex: Int): Long = {
 
     if( leftIndex == rightIndex) {
       input(leftIndex)
@@ -33,9 +35,17 @@ object majorityElement {
 
   }
 
-  def countFrequency(input: Array[Int], leftIndex: Int, rightIndex: Int, target: Int): Int = {
+  def countFrequency(input: Array[Long], leftIndex: Int, rightIndex: Int, target: Long): Int = {
     input.slice(leftIndex, rightIndex +1).count( x => x == target)
   }
+
+  def main(args: Array[String]): Unit = {
+    val numElems = readInt()
+    val input = readLine().split(" ").map(el => el.toLong)
+    assert(input.length == numElems)
+    print(getMajority(input))
+  }
+
 
 }
 

@@ -1,3 +1,4 @@
+import scala.io.StdIn.{readInt, readLine}
 
 import scala.annotation.tailrec
 import scala.util.Random
@@ -52,5 +53,12 @@ object quickSort {
         (input, lowerIdx)
       }
     }
+
+  def main(args: Array[String]): Unit = {
+    val numElems = readInt()
+    val input = readLine().split(" ").map(el => el.toInt)
+    assert(input.length == numElems)
+    print(sort(input))
+  }
 
 }
