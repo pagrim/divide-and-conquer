@@ -1,6 +1,3 @@
-package QuickSort
-
-import java.util.NoSuchElementException
 
 import scala.annotation.tailrec
 import scala.util.Random

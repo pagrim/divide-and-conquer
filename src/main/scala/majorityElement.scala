@@ -1,5 +1,3 @@
-package MajorityElement
-
 object majorityElement {
 
   def getMajority(input: Array[Int]): Int = {

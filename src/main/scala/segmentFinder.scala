@@ -1,6 +1,7 @@
-package Lottery
-
 import scala.annotation.tailrec
+
+case class Segment(left: Int, right: Int)
+case class Accumulator(prevLeftIdx: Int, counts: Array[Int], buffer: Array[Segment])
 
 object segmentFinder {
 
@@ -34,5 +35,4 @@ object segmentFinder {
 
 }
 
-case class Segment(left: Int, right: Int)
-case class Accumulator(prevLeftIdx: Int, counts: Array[Int], buffer: Array[Segment])
+

@@ -1,9 +1,6 @@
-
-
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import Lottery.segmentFinder
-import Lottery.Segment
+
 
 class SegmentFinderSpec extends AnyFlatSpec with Matchers {
 
@@ -13,5 +10,3 @@ class SegmentFinderSpec extends AnyFlatSpec with Matchers {
 
 
 }
-
-

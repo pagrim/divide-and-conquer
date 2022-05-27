@@ -1,6 +1,6 @@
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import QuickSort.quickSort
+
 
 class QuickSortSpec extends AnyFlatSpec with Matchers {
 
@@ -36,5 +36,3 @@ class QuickSortSpec extends AnyFlatSpec with Matchers {
   }
 
 }
-
-

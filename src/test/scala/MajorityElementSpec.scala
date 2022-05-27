@@ -1,5 +1,5 @@
 import org.scalatest.flatspec.AnyFlatSpec
-import MajorityElement.majorityElement
+
 
 class MajorityElementSpec extends AnyFlatSpec {
 
@@ -10,4 +10,3 @@ class MajorityElementSpec extends AnyFlatSpec {
   }
 
 }
-
