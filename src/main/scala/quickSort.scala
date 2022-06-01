@@ -45,31 +45,33 @@ object quickSort {
       val randPivotChosen = input.updated(leftIndex, input(randIndex)).updated(randIndex, firstElement)
       val partitionRes = partition(
         arr = randPivotChosen,
+        pivotIdx = leftIndex,
         lowerIdx = leftIndex,
         equalIdx = leftIndex,
         scanIdx = leftIndex + 1)
-      val lowerSorted = _sort(partitionRes.arr.slice(leftIndex, partitionRes.lowerIdx + 1), leftIndex, partitionRes.lowerIdx, randomGen)
-      val upperSorted = _sort(partitionRes.arr.slice(partitionRes.equalIdx + 1, partitionRes.arr.length), partitionRes.equalIdx + 1, rightIndex, randomGen)
+
+      val lowerSorted = _sort(partitionRes.arr, leftIndex, partitionRes.lowerIdx, randomGen)
+      val upperSorted = _sort(partitionRes.arr, partitionRes.equalIdx + 1, rightIndex, randomGen)
       val equalSorted = partitionRes.arr.slice(partitionRes.lowerIdx + 1, partitionRes.equalIdx + 1)
       lowerSorted ++ equalSorted ++ upperSorted
     }
   }
 
   @tailrec
-  def partition(arr: Array[Int], lowerIdx: Int, equalIdx: Int, scanIdx: Int): PartitionState = {
+  def partition(arr: Array[Int], pivotIdx: Int, lowerIdx: Int, equalIdx: Int, scanIdx: Int): PartitionState = {
     /** *
      * This function implements updates on the partitioned part of the array until the left index reaches the right
-     * index, then swaps the pivot to its final position
+     * index, then swaps the pivot to its final position and reduce the lower index in the case of a swap
      */
-    val pivotIdx = 0
     val pivotVal = arr(pivotIdx)
     val updated = partitionUpdate(arr, pivotVal, scanIdx, lowerIdx, equalIdx)
     if (scanIdx >= arr.length - 1) {
       val swappedPivot = updated.arr.updated(pivotIdx, updated.arr(updated.lowerIdx)).updated(updated.lowerIdx, pivotVal)
-      return PartitionState(swappedPivot, updated.lowerIdx, updated.equalIdx, updated.scanIdx)
+      val lowerIdxAdjustment = if (lowerIdx > pivotIdx) 1 else 0
+      return PartitionState(swappedPivot, updated.lowerIdx - lowerIdxAdjustment, updated.equalIdx, updated.scanIdx)
     } else {
     }
-    partition(arr=updated.arr, lowerIdx=updated.lowerIdx, equalIdx=updated.equalIdx, scanIdx=scanIdx + 1)
+    partition(arr=updated.arr, pivotIdx=pivotIdx, lowerIdx=updated.lowerIdx, equalIdx=updated.equalIdx, scanIdx=scanIdx + 1)
   }
 
   def partitionUpdate(arr: Array[Int], pivotVal: Int, scanIdx: Int, lowerIdx: Int, equalIdx: Int): PartitionState = {

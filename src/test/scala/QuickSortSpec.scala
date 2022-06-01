@@ -15,9 +15,9 @@ class QuickSortSpec extends AnyFlatSpec with Matchers {
     val partitionExamples = Table(
       ("arr", "lowerIdx", "equalIdx", "scanIdx", "resArr", "resLowerIdx",
         "resEqualIdx", "resScanIdx"),
-      (Array(4, 1, 5, 8, 9, 5), 0, 0, 1, Array(1, 4, 5, 8, 9, 5), 1, 1, 5),
-      (Array(6, 1, 5, 8, 6, 6, 9, 5), 0, 0, 1, Array(5, 1, 5, 6, 6, 6, 9, 8), 3, 5, 7),
-      (Array(6, 1, 5, 8, 6, 6, 9, 5), 0, 0, 1, Array(5, 1, 5, 6, 6, 6, 9, 8), 3, 5, 7)
+      (Array(4, 1, 5, 8, 9, 5), 0, 0, 1, Array(1, 4, 5, 8, 9, 5), 0, 1, 5),
+      (Array(6, 1, 5, 8, 6, 6, 9, 5), 0, 0, 1, Array(5, 1, 5, 6, 6, 6, 9, 8), 2, 5, 7),
+      (Array(6, 1, 5, 8, 6, 6, 9, 5), 0, 0, 1, Array(5, 1, 5, 6, 6, 6, 9, 8), 2, 5, 7)
     )
 
     forAll(partitionExamples) {
@@ -26,6 +26,7 @@ class QuickSortSpec extends AnyFlatSpec with Matchers {
         val expPartitionState = PartitionState(resArr, resLowerIdx, resEqualIdx, resScanIdx)
         val res = quickSort.partition(
           arr = arr,
+          pivotIdx = lowerIdx,
           lowerIdx = lowerIdx,
           equalIdx = equalIdx,
           scanIdx = scanIdx)
