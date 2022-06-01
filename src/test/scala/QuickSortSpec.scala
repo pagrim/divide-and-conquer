@@ -13,18 +13,28 @@ class QuickSortSpec extends AnyFlatSpec with Matchers {
   "A quickSort" should "partition input array correctly" in {
 
     val partitionExamples = Table(
-      ("arr", "leftIdx", "rightIdx", "pivotVal", "lowerIdx", "equalIdx", "scanIdx", "resArr", "resLowerIdx",
+      ("arr", "lowerIdx", "equalIdx", "scanIdx", "resArr", "resLowerIdx",
         "resEqualIdx", "resScanIdx"),
-      (Array(4, 1, 5, 8, 9, 5), 0, 5, 4, 0, 0, 0, Array(1, 4, 5, 8, 9, 5), 1, 1, 5)
+      (Array(4, 1, 5, 8, 9, 5), 0, 0, 1, Array(1, 4, 5, 8, 9, 5), 1, 1, 5),
+      (Array(6, 1, 5, 8, 6, 6, 9, 5), 0, 0, 1, Array(5, 1, 5, 6, 6, 6, 9, 8), 3, 5, 7),
+      (Array(6, 1, 5, 8, 6, 6, 9, 5), 0, 0, 1, Array(5, 1, 5, 6, 6, 6, 9, 8), 3, 5, 7)
     )
 
     forAll(partitionExamples) {
-      (arr: Array[Int], leftIdx: Int, rightIdx: Int, pivotVal: Int, lowerIdx: Int, equalIdx: Int,
-       scanIdx: Int, resArr: Array[Int], resLowerIdx: Int, resEqualIdx: Int, resScanIdx: Int) =>
+      (arr: Array[Int], lowerIdx: Int, equalIdx: Int, scanIdx: Int, resArr: Array[Int],
+       resLowerIdx: Int, resEqualIdx: Int, resScanIdx: Int) =>
         val expPartitionState = PartitionState(resArr, resLowerIdx, resEqualIdx, resScanIdx)
-        val res = quickSort.partition(arr, leftIdx, rightIdx, pivotVal, scanIdx, lowerIdx, equalIdx)
+        val res = quickSort.partition(
+          arr = arr,
+          lowerIdx = lowerIdx,
+          equalIdx = equalIdx,
+          scanIdx = scanIdx)
         res shouldEqual expPartitionState
     }
+  }
+
+  "A PartitionState" should "evaluate equals correctly" in {
+    PartitionState(Array(0, 1, 2), 0, 1, 2) shouldEqual PartitionState(Array(0, 1, 2), 0, 1, 2)
   }
 
   "A quickSort" should "update input array correctly for partitioning" in {
@@ -35,7 +45,7 @@ class QuickSortSpec extends AnyFlatSpec with Matchers {
     )
 
     forAll(partitionUpdateExamples) {
-      (arr: Array[Int], pivotVal: Int, scanIdx:Int, lowerIdx: Int,
+      (arr: Array[Int], pivotVal: Int, scanIdx: Int, lowerIdx: Int,
        equalIdx: Int, resArr: Array[Int], resLowerIdx: Int, resEqualIdx: Int) =>
         val partitionUpdateRes = quickSort.partitionUpdate(arr, pivotVal, scanIdx, lowerIdx, equalIdx)
         partitionUpdateRes.arr shouldEqual resArr
