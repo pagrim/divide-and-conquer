@@ -1,38 +1,37 @@
-import scala.annotation.tailrec
 
 case class Segment(left: Int, right: Int)
-case class Accumulator(prevLeftIdx: Int, counts: Array[Int], buffer: Array[Segment])
+case class Accumulator(leftPts: Int, rightPts: Int, counts: Map[Int, Int])
+
+sealed trait PointMarker {def pos: Int}
+
+object PointMarker {
+  case class Left(pos: Int) extends PointMarker
+  case class Point(pos: Int) extends PointMarker
+  case class Right(pos: Int) extends PointMarker
+}
 
 object segmentFinder {
 
-  //TODO add in method for sorting, currently assuming points and segments are sorted
-
   def countContainingSegments(points: Array[Int], segments: Array[Segment]): Array[Int] = {
-    val initAcc = Accumulator(0, Array(), Array())
-    val finalAcc = points.foldLeft( initAcc )( (acc, pt) => accumulate(acc, pt, segments) )
-    finalAcc.counts
-  }
-
-  def accumulate(acc: Accumulator, targetPoint: Int, segments: Array[Segment]): Accumulator = {
-
-    val newLeftIndex = findSegmentsLeftIndex(acc.prevLeftIdx, targetPoint, segments)
-    val bufferWithLefts = acc.buffer ++ segments.slice(acc.prevLeftIdx, newLeftIndex)
-    val filteredBuffer = bufferWithLefts.filter( seg => seg.right >= targetPoint)
-    val count = filteredBuffer.length
-    val newCounts = acc.counts ++ Array(count)
-    Accumulator(newLeftIndex, newCounts, filteredBuffer)
-  }
-
-
-  @tailrec
-  def findSegmentsLeftIndex(index: Int, targetPoint: Int, segments: Array[Segment]): Int = {
-    if(index == segments.length || segments(index).left >= targetPoint){
-      index
-    } else {
-      findSegmentsLeftIndex(index + 1, targetPoint, segments)
+    /***
+     * This method creates an ordered array of PointMarkers and computes how many segment contain each point by
+     * calculating the number of Left PointMarkets minus the number of Right PointMarkers when a PointMarker.Point
+     * is reached
+     */
+    val positions = points.map( pt => PointMarker.Point(pt)) ++
+      segments.flatMap(seg => Array(PointMarker.Left(seg.left), PointMarker.Right(seg.right)))
+    val positionsOrdered = positions.sortBy(pstn => pstn.pos)
+    val finalAcc = positionsOrdered.foldLeft(Accumulator(0, 0, Map()))(
+      (acc, pt) => pt match {
+        case _: PointMarker.Left => Accumulator(acc.leftPts + 1, acc.rightPts, acc.counts)
+        case _: PointMarker.Right => Accumulator(acc.leftPts, acc.rightPts + 1, acc.counts)
+        case pt: PointMarker.Point =>
+          val netPts = acc.leftPts - acc.rightPts
+          Accumulator(acc.leftPts, acc.rightPts, acc.counts ++ Map(pt.pos -> netPts))
+      })
+      points.map(pt => finalAcc.counts(pt))
     }
-  }
 
-}
+  }
 
 
