@@ -11,6 +11,17 @@ object majorityElement {
     }
   }
 
+  def isMajority(input: Array[Long]): Long = {
+    val majority = _getMajority(input, 0, input.length -1)
+    val majorityCount = countFrequency(input, 0, input.length -1, majority)
+    if(majorityCount > input.length/2){
+      1} else {
+      0
+    }
+  }
+
+
+
   def _getMajority(input: Array[Long], leftIndex: Int, rightIndex: Int): Long = {
 
     if( leftIndex == rightIndex) {
@@ -43,7 +54,7 @@ object majorityElement {
     val numElems = readInt()
     val input = readLine().split(" ").map(el => el.toLong)
     assert(input.length == numElems)
-    print(getMajority(input))
+    print(isMajority(input))
   }
 
 
