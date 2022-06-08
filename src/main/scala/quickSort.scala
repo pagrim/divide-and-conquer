@@ -102,7 +102,7 @@ object quickSort {
     val numElems = readInt()
     val input = readLine().split(" ").map(el => el.toInt)
     assert(input.length == numElems)
-    print(sort(input))
+    print(sort(input).mkString(" "))
   }
 
 }
