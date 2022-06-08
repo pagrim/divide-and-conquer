@@ -1,3 +1,4 @@
+import scala.io.StdIn.{readInt, readLine}
 
 case class Segment(left: Int, right: Int)
 case class Accumulator(leftPts: Int, rightPts: Int, counts: Map[Int, Int])
@@ -13,12 +14,12 @@ object PointMarker {
 object segmentFinder {
 
   def countContainingSegments(points: Array[Int], segments: Array[Segment]): Array[Int] = {
-    /***
+    /** *
      * This method creates an ordered array of PointMarkers and computes how many segment contain each point by
      * calculating the number of Left PointMarkets minus the number of Right PointMarkers when a PointMarker.Point
      * is reached
      */
-    val positions = points.map( pt => PointMarker.Point(pt)) ++
+    val positions = points.map(pt => PointMarker.Point(pt)) ++
       segments.flatMap(seg => Array(PointMarker.Left(seg.left), PointMarker.Right(seg.right)))
     val positionsOrdered = positions.sortBy(pstn => pstn.pos)
     val finalAcc = positionsOrdered.foldLeft(Accumulator(0, 0, Map()))(
@@ -29,9 +30,22 @@ object segmentFinder {
           val netPts = acc.leftPts - acc.rightPts
           Accumulator(acc.leftPts, acc.rightPts, acc.counts ++ Map(pt.pos -> netPts))
       })
-      points.map(pt => finalAcc.counts(pt))
-    }
-
+    points.map(pt => finalAcc.counts(pt))
   }
 
+  def main(args: Array[String]): Unit = {
+    val input = readLine().split(" ").map(el => el.toInt)
+    val numSegments = input(0)
+    val numPoints = input(1)
+    val segInputs = for (_ <- 1 to numSegments) yield readLine()
+
+    val segments = segInputs.map(inp => inp.split(" ").map(el => el.toInt)).map(
+      segArr => Segment(segArr(0), segArr(1))).toArray
+    val points = readLine().split(" ").map(el => el.toInt)
+    assert(points.length == numPoints)
+
+    print(countContainingSegments(points, segments).mkString(" "))
+
+  }
+}
 
