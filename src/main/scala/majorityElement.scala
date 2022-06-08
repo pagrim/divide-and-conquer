@@ -12,7 +12,7 @@ object majorityElement {
   @tailrec
   def fetchMajority(counts: Array[(Long, Int)], idx: Int, majorityThresh: Int): (Long, Int) = {
     if (idx == counts.length) { (-1L, 0) }
-    else if (counts(idx)._2 >= majorityThresh) {
+    else if (counts(idx)._2 > majorityThresh) {
       (counts(idx)._1, 1)
     } else {
       fetchMajority(counts, idx + 1, majorityThresh)
