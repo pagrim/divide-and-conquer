@@ -8,6 +8,7 @@ class QuickSortSpec extends AnyFlatSpec with Matchers {
   "A quickSort" should "sort input array correctly" in {
     quickSort.sort(Array(4, 1, 5, 8, 9, 5), randomSeed = Some(42)) shouldEqual Array(1, 4, 5, 5, 8, 9)
     quickSort.sort(Array(6, 7, 3, 3, 0), randomSeed = Some(42)) shouldEqual Array(0, 3, 3, 6, 7)
+    quickSort.sort(Array(2, 3, 9, 2, 9), randomSeed = Some(-941176648)) shouldEqual Array(2, 2, 3, 9, 9)
   }
 
   "A quickSort" should "partition input array correctly" in {
@@ -26,10 +27,14 @@ class QuickSortSpec extends AnyFlatSpec with Matchers {
         val expPartitionState = PartitionState(resArr, resLowerIdx, resEqualIdx, resScanIdx)
         val res = quickSort.partition(
           arr = arr,
-          pivotIdx = lowerIdx,
-          lowerIdx = lowerIdx,
-          equalIdx = equalIdx,
-          scanIdx = scanIdx)
+          Indices(
+            left=0,
+            right=arr.length - 1,
+            pivot=lowerIdx,
+            lower=lowerIdx,
+            equal=equalIdx,
+            scan=scanIdx)
+          )
         res shouldEqual expPartitionState
     }
   }
