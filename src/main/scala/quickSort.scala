@@ -26,7 +26,7 @@ object quickSort {
   def _sort(arr: Array[Int], left: Int, right: Int, rdm: Random): Unit = {
     if (left < right) {
       logger.debug(s"Starting main sort")
-      val randIndex = rdm.nextInt(arr.length)
+      val randIndex = rdm.nextInt(right - left)
       swap(arr, randIndex, arr.length -1)
       val (j, k) = partition(arr, left, right)
       _sort(arr, left, j-1, rdm)
@@ -37,20 +37,23 @@ object quickSort {
 
   def partition(arr: Array[Int], left: Int, right: Int): (Int, Int) = {
     /** This function implements a partition on an array */
-    val pivotVal = arr(arr.length)
-    var (j, k) = (0, 0)
+    val pivotVal = arr(arr.length -1)
+    var (j, k) = (-1, -1)
     for (i <- left until right) {
         arr(i) match {
          case x if x == pivotVal =>
-           j += 1
-           swap(arr, i, j)
+           k += 1
+           swap(arr, i, k)
          case x if x < pivotVal =>
            j += 1
            k += 1
            swap(arr, i, j)
            swap(arr, i, k)
+         case _ => ()
        }
     }
+    k += 1
+    swap(arr, k, arr.length - 1)
     (j, k)
   }
 
