@@ -24,8 +24,8 @@ class QuickSortSpec extends AnyFlatSpec with Matchers {
 
     val partitionExamples = Table(
       ("arr", "resArr", "j", "k"),
-      (Array(1, 5, 8, 9, 5, 4), Array(1, 4, 8, 9, 5, 5), 0, 1),
-      (Array(1, 5, 8, 6, 6, 9, 5, 6), Array(1, 5, 5, 6, 6, 6, 8, 9), 2, 5)
+      (Array(4, 1, 5, 8, 9, 5), Array(1, 4, 5, 8, 9, 5), 0, 1),
+      (Array(6, 1, 5, 8, 6, 6, 9, 5), Array(5, 1, 5, 6, 6, 6, 9, 8), 2, 5)
     )
 
     forAll(partitionExamples) {

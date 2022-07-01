@@ -13,7 +13,7 @@ object quickSortVolumeTest {
       val arrLen = Random.nextInt(20) + 1
       val input = Seq.fill(arrLen)(Random.nextInt(100)).toArray
       val original = input.map(identity)
-      val pivot = original(input.length - 1)
+      val pivot = original(0)
       val (j, k) = partition(input, left=0, right=input.length - 1)
       try {
       for(idx <- input.indices){

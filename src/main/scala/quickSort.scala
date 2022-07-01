@@ -36,9 +36,9 @@ object quickSort {
 
   def partition(arr: Array[Int], left: Int, right: Int): (Int, Int) = {
     /** This function implements a partition on an array */
-    val pivotVal = arr(right)
-    var (j, k) = (left -1, left -1)
-    for (i <- left until right -1) {
+    val pivotVal = arr(left)
+    var (j, k) = (left, left)
+    for (i <- left + 1 to right) {
         arr(i) match {
          case x if x == pivotVal =>
            k += 1
@@ -51,8 +51,8 @@ object quickSort {
          case _ => ()
        }
     }
-    k += 1
-    swap(arr, k, arr.length - 1)
+    swap(arr, j, left)
+    j -= 1
     (j, k)
   }
 
