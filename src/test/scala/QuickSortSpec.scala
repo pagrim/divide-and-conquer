@@ -35,4 +35,6 @@ class QuickSortSpec extends AnyFlatSpec with Matchers {
         res shouldEqual(j, k)
     }
   }
+
 }
+

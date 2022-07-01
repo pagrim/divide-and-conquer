@@ -17,7 +17,7 @@ object quickSort {
       case _ =>
         val rdmGen = new Random()
         val seed = rdmGen.nextInt
-        logger.info(s"Using random seed ${seed}")
+        logger.info(s"Starting main sort using random seed ${seed}")
         new Random(seed)
       }
     _sort(arr, 0, arr.length - 1, rdm)
@@ -25,9 +25,8 @@ object quickSort {
 
   def _sort(arr: Array[Int], left: Int, right: Int, rdm: Random): Unit = {
     if (left < right) {
-      logger.debug(s"Starting main sort")
-      val randIndex = rdm.nextInt(right - left)
-      swap(arr, randIndex, arr.length -1)
+      val randIndex = rdm.nextInt(right - left) + left
+      swap(arr, randIndex, right)
       val (j, k) = partition(arr, left, right)
       _sort(arr, left, j-1, rdm)
       _sort(arr, k+1, right, rdm)
@@ -37,9 +36,9 @@ object quickSort {
 
   def partition(arr: Array[Int], left: Int, right: Int): (Int, Int) = {
     /** This function implements a partition on an array */
-    val pivotVal = arr(arr.length -1)
-    var (j, k) = (-1, -1)
-    for (i <- left until right) {
+    val pivotVal = arr(right)
+    var (j, k) = (left -1, left -1)
+    for (i <- left until right -1) {
         arr(i) match {
          case x if x == pivotVal =>
            k += 1
@@ -48,7 +47,7 @@ object quickSort {
            j += 1
            k += 1
            swap(arr, i, j)
-           swap(arr, i, k)
+           if(j!=k) swap(arr, i, k)
          case _ => ()
        }
     }
