@@ -1,10 +1,7 @@
 import scala.io.StdIn.{readInt, readLine}
 import scala.util.Random
-import com.typesafe.scalalogging.Logger
 
 object quickSort {
-
-  val logger: Logger = Logger("quicksort")
 
   def sort(arr: Array[Int], randomSeed: Option[Int] = None): Unit = {
     /** *
@@ -17,7 +14,6 @@ object quickSort {
       case _ =>
         val rdmGen = new Random()
         val seed = rdmGen.nextInt
-        logger.debug(s"Starting main sort using random seed ${seed}")
         new Random(seed)
       }
     _sort(arr, 0, arr.length - 1, rdm)
