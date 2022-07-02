@@ -17,7 +17,7 @@ object quickSort {
       case _ =>
         val rdmGen = new Random()
         val seed = rdmGen.nextInt
-        logger.info(s"Starting main sort using random seed ${seed}")
+        logger.debug(s"Starting main sort using random seed ${seed}")
         new Random(seed)
       }
     _sort(arr, 0, arr.length - 1, rdm)
@@ -26,9 +26,9 @@ object quickSort {
   def _sort(arr: Array[Int], left: Int, right: Int, rdm: Random): Unit = {
     if (left < right) {
       val randIndex = rdm.nextInt(right - left) + left
-      swap(arr, randIndex, right)
+      swap(arr, randIndex, left)
       val (j, k) = partition(arr, left, right)
-      _sort(arr, left, j-1, rdm)
+      _sort(arr, left, j, rdm)
       _sort(arr, k+1, right, rdm)
     }
   }
@@ -51,8 +51,10 @@ object quickSort {
          case _ => ()
        }
     }
-    swap(arr, j, left)
-    j -= 1
+    if(j> left) {
+      swap(arr, j, left)
+      j -= 1
+    }
     (j, k)
   }
 
